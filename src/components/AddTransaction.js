@@ -1,17 +1,30 @@
-import React, {useState, useContext} from 'react';
-import { GlobalContext } from '../context/GlobalState';
+import React, { useState, useContext } from 'react';
+import { GlobalContext } from '../context/GlobalContext';
+import { withStyles } from '@material-ui/core/styles';
+import { green } from '@material-ui/core/colors';
+import { RadioGroup, Radio, FormControlLabel, Typography, FormControl, TextField, Button } from '@material-ui/core';
+
+const GreenRadio = withStyles({
+    root: {
+        color: green[400],
+        '&$checked': {
+            color: green[600],
+        },
+    },
+    checked: {},
+})((props) => <Radio color="default" {...props} />);
 
 export const AddTransaction = () => {
     const [text, setText] = useState('');
     const [amount, setAmount] = useState(0);
     const [income, setIncome] = useState('Income');
 
-    const {addTran, transactions } = useContext(GlobalContext);
+    const { addTran, transactions } = useContext(GlobalContext);
 
     const onSubmit = e => {
         e.preventDefault();
 
-                const newTransaction = {
+        const newTransaction = {
             id: transactions.length + 1,
             text,
             amount: +amount,
@@ -24,30 +37,27 @@ export const AddTransaction = () => {
     const incomeRadioChanged = e => {
 
         setIncome(e.target.value);
-        setAmount(0);        
+        setAmount(0);
     }
 
     return (
         <div>
-            <h3>Add new Transaction</h3>
+            <Typography variant="h4">Add new Transaction</Typography>
             <form onSubmit={onSubmit}>
-                <div className="form-control">
-                    <label htmlFor="text">Text</label>
-                    <input type="text" value={text} onChange={(e) => setText(e.target.value)} placeholder="Enter Income/Expense description..."/>                    
-                </div>
-                <div className="form-control">
-                    <label htmlfor="text">
-                    <input type="radio" name="radio-group" value="Income" defaultChecked onChange={incomeRadioChanged}/>
-                    Income </label>
-                    <label htmlfor="text">
-                    <input type="radio" name="radio-group" value="Expense"  onChange={incomeRadioChanged}/>
-                    Expense</label>
-                    <input type="number" value={amount} onChange={(e)=> setAmount(income === 'Income' ? Math.abs(e.target.value): Math.abs(e.target.value) * -1)} placeholder="Enter Amount..."/>                    
-                </div>
-                <button className="btn">Add Transaction</button>
+                <TextField variant="outlined" name="text" label="Enter Income/Expense description..."
+                     fullWidth onChange={(e) => setText(e.target.value)}
+                    autoComplete="off" value={text} />
+                <FormControl>
+                    <RadioGroup row aria-label="incomeexpense" name="incomeexpense" defaultValue='Income' >
+                        <FormControlLabel value="Income" defaultChecked control={<GreenRadio />} label="Income" onChange={incomeRadioChanged} />
+                        <FormControlLabel value="Expense" control={<Radio />} label="Expense" onChange={incomeRadioChanged} />
+                    </RadioGroup>
+                    <input type="number" value={amount} onChange={(e) => setAmount(income === 'Income' ? Math.abs(e.target.value) : Math.abs(e.target.value) * -1)} placeholder="Enter Amount..." />
+                    <Button type="submit" style={{ margin: '20px 0' }} fullWidth variant="contained"
+                    color="primary">Add Transaction</Button>
+                </FormControl>
+                
             </form>
         </div>
     )
 }
-
-// checked={isIncome}  onChange={() => setIsIncome(true)}
