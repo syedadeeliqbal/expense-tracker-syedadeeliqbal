@@ -33,7 +33,7 @@ export const Transaction = ({transaction}) => {
           <ListItemText id="switch-list-label-wifi" primary={transaction.text}
             style={{ color: '#000', fontWeight: 'bold' }} />
         </ListItemIcon>
-        <ListItemText id="switch-list-label-wifi" primary={`${signClass.sign} ${transaction.amount}`} />
+        <ListItemText id="switch-list-label-wifi" primary={`${signClass.sign} ${Math.abs(transaction.amount)}`} />
         <ListItemSecondaryAction>
           <IconButton edge="end" aria-label="comments" onClick={() => { delTran(transaction.id) }}>
             <DeleteOutlinedIcon />

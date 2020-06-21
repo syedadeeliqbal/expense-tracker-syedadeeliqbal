@@ -28,14 +28,12 @@ export const AddTransaction = () => {
             id: transactions.length + 1,
             text,
             amount: +amount,
-            income
         }
 
         addTran(newTransaction);
     }
 
     const incomeRadioChanged = e => {
-
         setIncome(e.target.value);
         setAmount(0);
     }
